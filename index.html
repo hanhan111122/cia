@@ -4,214 +4,658 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ciaaa 💌</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <style>
-  *{box-sizing:border-box}
-  body{
-    margin:0; min-height:100vh; overflow:hidden;
-    font-family: "Trebuchet MS", Arial, sans-serif;
-    background:#fff0b8; color:#171717;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  overflow:hidden;
+  font-family:"Trebuchet MS",Arial,sans-serif;
+  background:#fff0b8;
+  color:#171717;
+}
+
+.bg-heart{
+  position:fixed;
+  font-size:24px;
+  opacity:.5;
+  pointer-events:none;
+  animation:float 7s linear infinite;
+}
+
+@keyframes float{
+  from{transform:translateY(110vh) rotate(0deg)}
+  to{transform:translateY(-20vh) rotate(360deg)}
+}
+
+.screen{
+  min-height:100vh;
+  display:none;
+  place-items:center;
+  padding:24px;
+}
+
+.screen.active{display:grid}
+
+.card{
+  width:min(560px,94vw);
+  background:#fffdf7;
+  border:4px solid #111;
+  border-radius:30px;
+  box-shadow:10px 10px 0 #111;
+  padding:34px 28px;
+  text-align:center;
+  position:relative;
+}
+
+.sticker{
+  display:inline-block;
+  background:#ff75a8;
+  border:3px solid #111;
+  padding:8px 15px;
+  border-radius:14px;
+  transform:rotate(-3deg);
+  font-weight:900;
+  margin-bottom:18px;
+}
+
+h1{
+  font-size:clamp(34px,8vw,64px);
+  margin:8px 0 14px;
+  line-height:.95;
+}
+
+h2{
+  font-size:clamp(28px,6vw,44px);
+  margin:8px 0 18px;
+}
+
+p{
+  font-size:18px;
+  line-height:1.55;
+}
+
+.big{
+  font-size:24px;
+  font-weight:900;
+}
+
+.location{
+  margin:20px auto;
+  padding:14px;
+  border:3px solid #111;
+  border-radius:18px;
+  background:#baf28a;
+  font-size:24px;
+  font-weight:900;
+}
+
+.dates{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.date{
+  background:#d9c7ff;
+  border:3px solid #111;
+  border-radius:18px;
+  padding:15px 20px;
+  font-size:20px;
+  font-weight:900;
+  cursor:pointer;
+  transition:.15s;
+  box-shadow:4px 4px 0 #111;
+}
+
+.date:hover{
+  transform:translateY(-3px);
+}
+
+.date.selected{
+  background:#ff8db7;
+  transform:translateY(3px);
+  box-shadow:none;
+}
+
+.actions{
+  margin-top:25px;
+  min-height:100px;
+  position:relative;
+}
+
+button{
+  border:3px solid #111;
+  border-radius:18px;
+  padding:15px 28px;
+  font-size:20px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:5px 5px 0 #111;
+}
+
+.yes{
+  background:#ff5f9a;
+  color:#111;
+}
+
+.yes:active{
+  transform:translate(4px,4px);
+  box-shadow:none;
+}
+
+.no{
+  background:#eee;
+  position:absolute;
+  left:55%;
+  top:0;
+  transition:left .18s ease,top .18s ease,transform .18s ease;
+}
+
+.tiny{
+  font-size:13px;
+  margin-top:20px;
+  opacity:.7;
+}
+
+.progress{
+  position:fixed;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%);
+  font-weight:900;
+  background:#fff;
+  border:3px solid #111;
+  border-radius:99px;
+  padding:7px 14px;
+  z-index:5;
+}
+
+.celebrate{
+  font-size:70px;
+  animation:bounce .8s infinite alternate;
+}
+
+@keyframes bounce{
+  to{
+    transform:translateY(-12px) rotate(4deg);
   }
-  .bg-heart{
-    position:fixed; font-size:24px; opacity:.5; pointer-events:none;
-    animation:float 7s linear infinite;
+}
+
+.confetti{
+  position:fixed;
+  top:-20px;
+  width:12px;
+  height:20px;
+  animation:fall 2.7s linear forwards;
+  pointer-events:none;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(720deg);
   }
-  @keyframes float{
-    from{transform:translateY(110vh) rotate(0deg)}
-    to{transform:translateY(-20vh) rotate(360deg)}
-  }
-  .screen{
-    min-height:100vh; display:none; place-items:center; padding:24px;
-  }
-  .screen.active{display:grid}
-  .card{
-    width:min(560px,94vw); background:#fffdf7;
-    border:4px solid #111; border-radius:30px;
-    box-shadow:10px 10px 0 #111;
-    padding:34px 28px; text-align:center; position:relative;
-  }
-  .sticker{
-    display:inline-block; background:#ff75a8; border:3px solid #111;
-    padding:8px 15px; border-radius:14px; transform:rotate(-3deg);
-    font-weight:900; margin-bottom:18px;
-  }
-  h1{font-size:clamp(34px,8vw,64px); margin:8px 0 14px; line-height:.95}
-  h2{font-size:clamp(28px,6vw,44px); margin:8px 0 18px}
-  p{font-size:18px; line-height:1.55}
-  .big{font-size:24px; font-weight:900}
-  .location{
-    margin:20px auto; padding:14px; border:3px solid #111;
-    border-radius:18px; background:#baf28a; font-size:24px; font-weight:900;
-  }
-  .dates{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
-  .date{
-    background:#d9c7ff; border:3px solid #111; border-radius:18px;
-    padding:15px 20px; font-size:20px; font-weight:900;
-    cursor:pointer; transition:.15s; box-shadow:4px 4px 0 #111;
-  }
-  .date:hover{transform:translateY(-3px)}
-  .date.selected{background:#ff8db7; transform:translateY(3px); box-shadow:none}
-  .actions{margin-top:25px; min-height:100px; position:relative}
-  button{
-    border:3px solid #111; border-radius:18px; padding:15px 28px;
-    font-size:20px; font-weight:900; cursor:pointer;
-    box-shadow:5px 5px 0 #111;
-  }
-  .yes{background:#ff5f9a; color:#111}
-  .yes:active{transform:translate(4px,4px);box-shadow:none}
-  .no{
-    background:#eee; position:absolute; left:55%; top:0;
-    transition:left .18s ease, top .18s ease, transform .18s ease;
-  }
-  .tiny{font-size:13px; margin-top:20px; opacity:.7}
-  .progress{position:fixed;top:14px;left:50%;transform:translateX(-50%);
-    font-weight:900;background:#fff;border:3px solid #111;border-radius:99px;padding:7px 14px;z-index:5}
-  .celebrate{font-size:70px;animation:bounce .8s infinite alternate}
-  @keyframes bounce{to{transform:translateY(-12px) rotate(4deg)}}
-  .confetti{
-    position:fixed; top:-20px; width:12px; height:20px;
-    animation:fall 2.7s linear forwards; pointer-events:none;
-  }
-  @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
-  .speech{
-    background:#fff0f5;border:3px solid #111;border-radius:18px;
-    padding:13px;margin:18px 0;font-weight:900;
-  }
+}
+
+.speech{
+  background:#fff0f5;
+  border:3px solid #111;
+  border-radius:18px;
+  padding:13px;
+  margin:18px 0;
+  font-weight:900;
+}
+
+.error{
+  color:#d00000;
+  font-weight:900;
+}
 </style>
 </head>
+
 <body>
 
-<div class="progress" id="progress">IMPORTANT BUSINESS 💼</div>
+<div class="progress" id="progress">
+IMPORTANT BUSINESS 💼
+</div>
 
 <section class="screen active" id="s1">
   <div class="card">
-    <div class="sticker">⚠️ VERY IMPORTANT</div>
-    <h1>CIAAA.</h1>
-    <p class="big">THIS IS NOT A SCAM.</p>
-    <p>I have a very serious, extremely official question.</p>
-    <div class="actions">
-      <button class="yes" onclick="next(2)">YES, TELL ME 👀</button>
+
+    <div class="sticker">
+      ⚠️ VERY IMPORTANT
     </div>
+
+    <h1>CIAAA.</h1>
+
+    <p class="big">
+      THIS IS NOT A SCAM.
+    </p>
+
+    <p>
+      I have a very serious, extremely official question.
+    </p>
+
+    <div class="actions">
+      <button class="yes" onclick="next(2)">
+        YES, TELL ME 👀
+      </button>
+    </div>
+
   </div>
 </section>
 
 <section class="screen" id="s2">
   <div class="card">
-    <div class="sticker">🚨 BREAKING NEWS</div>
-    <h2>I LIKE YOU.</h2>
-    <p>Unfortunately, this information has now become your problem.</p>
-    <div class="speech">Want to know how to solve this problem?😏 </div>
-    <div class="actions">
-      <button class="yes" onclick="next(3)">Click to continue 😏</button>
+
+    <div class="sticker">
+      🚨 BREAKING NEWS
     </div>
+
+    <h2>I LIKE YOU.</h2>
+
+    <p>
+      Unfortunately, this information has now become your problem.
+    </p>
+
+    <div class="speech">
+      Want to know how to solve this problem?😏
+    </div>
+
+    <div class="actions">
+      <button class="yes" onclick="next(3)">
+        Click to continue 😏
+      </button>
+    </div>
+
   </div>
 </section>
 
 <section class="screen" id="s3">
   <div class="card">
-    <div class="sticker">🍽️ THE ONLY WAY TO SOLVE</div>
-    <h2>WILL YOU GO ON A DINNER DATE WITH ME?</h2>
-    <p>There is absolutely no pressure.</p>
-    <p>Except the website was coded by a suspiciously determined person.</p>
-    <div class="actions">
-      <button class="yes" onclick="next(4)">YESSSS 💗</button>
-      <button class="no" id="no1" onmouseenter="escapeNo('no1')">NO 😭</button>
+
+    <div class="sticker">
+      🍽️ THE ONLY WAY TO SOLVE
     </div>
+
+    <h2>
+      WILL YOU GO ON A DINNER DATE WITH ME?
+    </h2>
+
+    <p>
+      There is absolutely no pressure.
+    </p>
+
+    <p>
+      Except the website was coded by a suspiciously determined person.
+    </p>
+
+    <div class="actions">
+
+      <button class="yes" onclick="next(4)">
+        YESSSS 💗
+      </button>
+
+      <button
+        class="no"
+        id="no1"
+        onmouseenter="escapeNo('no1')"
+        ontouchstart="escapeNo('no1')">
+        NO 😭
+      </button>
+
+    </div>
+
   </div>
 </section>
 
 <section class="screen" id="s4">
   <div class="card">
-    <div class="sticker">📍 LOCATION REVEALED</div>
-    <h2>MONOGRAPH KL</h2>
-    <div class="location">🍝 MONOGRAPH</div>
-    <p>Good food. Nice place. Questionable company.</p>
-    <p class="big">Pick your date 👇</p>
+
+    <div class="sticker">
+      📍 LOCATION REVEALED
+    </div>
+
+    <h2>
+      MONOGRAPH KL
+    </h2>
+
+    <div class="location">
+      🍝 MONOGRAPH KL
+    </div>
+
+    <p>
+      Good food. Nice place. Questionable company.
+    </p>
+
+    <p class="big">
+      Pick your date 👇
+    </p>
+
     <div class="dates">
-      <div class="date" onclick="pickDate(this,'1/9/2026 8pm')">🌷<br>1/9/2026 8pm</div>
-      <div class="date" onclick="pickDate(this,'2/9/2026 8pm')">🌸<br>2/9/2026 8pm</div>
+
+      <div
+        class="date"
+        onclick="pickDate(this,'2/9/2026 8pm')">
+        🌷<br>
+        2/9/2026 8pm
+      </div>
+
+      <div
+        class="date"
+        onclick="pickDate(this,'3/9/2026 8pm')">
+        🌸<br>
+        3/9/2026 8pm
+      </div>
+
     </div>
+
     <div class="actions">
-      <button class="yes" onclick="dateNext()">YES, THAT DATE 👍</button>
-      <button class="no" id="no2" onmouseenter="escapeNo('no2')">NO 😭</button>
+
+      <button
+        class="yes"
+        id="dateButton"
+        onclick="dateNext()">
+        YES, THAT DATE 👍
+      </button>
+
+      <button
+        class="no"
+        id="no2"
+        onmouseenter="escapeNo('no2')"
+        ontouchstart="escapeNo('no2')">
+        NO 😭
+      </button>
+
     </div>
-    <div class="tiny" id="dateHint">Please select a date. The committee is waiting.</div>
+
+    <div class="tiny" id="dateHint">
+      Please select a date. The committee is waiting.
+    </div>
+
   </div>
 </section>
 
 <section class="screen" id="s5">
   <div class="card">
-    <div class="celebrate">🥹💗🍽️</div>
-    <h2>CONGRATULATIONS.</h2>
-    <p class="big">YOU HAVE SUCCESSFULLY AGREED TO A DATE.</p>
-    <div class="location" id="finalDate">📅 DATE: TBA</div>
-    <div class="location">📍 MONOGRAPH KL</div>
-    <p>Thank you for your cooperation, Ciaaa.</p>
-    <p>I will pick you up~ But I need time to pretend I'm not nervous. 😭</p>
-    <button class="yes" onclick="celebrate()">I ACCEPT MY FATE 💕</button>
-    <div class="tiny">Side effects may include smiling, blushing &amp; having a suspiciously good time.</div>
+
+    <div class="celebrate">
+      🥹💗🍽️
+    </div>
+
+    <h2>
+      CONGRATULATIONS.
+    </h2>
+
+    <p class="big">
+      YOU HAVE SUCCESSFULLY AGREED TO A DATE.
+    </p>
+
+    <div class="location" id="finalDate">
+      📅 DATE: TBA
+    </div>
+
+    <div class="location">
+      📍 MONOGRAPH KL
+    </div>
+
+    <p>
+      Thank you for your cooperation, Ciaaa.
+    </p>
+
+    <p>
+      I will pick you up~
+      But I need time to pretend I'm not nervous. 😭
+    </p>
+
+    <button class="yes" onclick="celebrate()">
+      I ACCEPT MY FATE 💕
+    </button>
+
+    <div class="tiny">
+      Side effects may include smiling,
+      blushing &amp; having a suspiciously good time.
+    </div>
+
   </div>
 </section>
 
 <script>
+
+/* EMAILJS */
+
+const EMAILJS_PUBLIC_KEY = "WIy0jtLkbDAtnhF4F";
+const EMAILJS_SERVICE_ID = "service_ygd1wmg";
+const EMAILJS_TEMPLATE_ID = "template_tv0tivj";
+
+
+/* PUT THE TWO EMAIL ADDRESSES HERE */
+
+const YOUR_EMAIL = "tanhan0203@gmail.com";
+const HER_EMAIL = "feliciaaaaa18@gmail.com";
+
+
+emailjs.init({
+  publicKey: EMAILJS_PUBLIC_KEY
+});
+
+
+/* VARIABLES */
+
 let selectedDate = "";
 
+
+/* NAVIGATION */
+
 function next(n){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById("s"+n).classList.add("active");
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(s => s.classList.remove("active"));
+
+  document
+    .getElementById("s" + n)
+    .classList.add("active");
+
   document.getElementById("progress").textContent =
-    n===2 ? "UH OH 👀" : n===3 ? "NO ESCAPE 💀" : n===4 ? "DATE PLANNING 📝" : "MISSION SUCCESS 💗";
+    n === 2
+      ? "UH OH 👀"
+      : n === 3
+      ? "NO ESCAPE 💀"
+      : n === 4
+      ? "DATE PLANNING 📝"
+      : "MISSION SUCCESS 💗";
 }
 
+
+/* DATE SELECTION */
+
 function pickDate(el,date){
-  document.querySelectorAll(".date").forEach(d=>d.classList.remove("selected"));
+
+  document
+    .querySelectorAll(".date")
+    .forEach(d => d.classList.remove("selected"));
+
   el.classList.add("selected");
-  selectedDate=date;
+
+  selectedDate = date;
+
   document.getElementById("dateHint").textContent =
     "Excellent choice. Very sophisticated. Very romantic. 😌";
 }
 
-function dateNext(){
+
+/* SEND TWO EMAILS */
+
+async function dateNext(){
+
   if(!selectedDate){
+
     document.getElementById("dateHint").textContent =
       "🚨 You forgot to pick a date. Nice try. Pick one!";
+
     return;
   }
-  document.getElementById("finalDate").textContent="📅 DATE: "+selectedDate;
-  next(5);
-  celebrate();
-}
 
-function escapeNo(id){
-  const b=document.getElementById(id);
-  const x=(Math.random()*180)-90;
-  const y=(Math.random()*80)-40;
-  b.style.left=`calc(55% + ${x}px)`;
-  b.style.top=`${y}px`;
-  b.style.transform=`rotate(${(Math.random()*30)-15}deg)`;
-}
+  const button =
+    document.getElementById("dateButton");
 
-function celebrate(){
-  for(let i=0;i<80;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.textContent=["💗","💕","✨","🌸","🎉"][Math.floor(Math.random()*5)];
-    c.style.left=Math.random()*100+"vw";
-    c.style.fontSize=(12+Math.random()*18)+"px";
-    c.style.animationDelay=Math.random()*.8+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3500);
+  const hint =
+    document.getElementById("dateHint");
+
+  button.disabled = true;
+  button.textContent = "SENDING... 💌";
+
+
+  const baseParams = {
+
+    selected_date: selectedDate,
+
+    response: "YESSSS 💗",
+
+    location: "Monograph KL"
+
+  };
+
+
+  try {
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        ...baseParams,
+        to_email: YOUR_EMAIL
+      }
+    );
+
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        ...baseParams,
+        to_email: HER_EMAIL
+      }
+    );
+
+
+    document.getElementById("finalDate").textContent =
+      "📅 DATE: " + selectedDate;
+
+    next(5);
+
+    celebrate();
+
+
+  } catch(error){
+
+    console.error("EmailJS Error:",error);
+
+    button.disabled = false;
+    button.textContent = "YES, THAT DATE 👍";
+
+    hint.innerHTML =
+      '<span class="error">😭 Email failed. Please check your EmailJS settings.</span>';
+
   }
 }
 
+
+/* NO BUTTON */
+
+function escapeNo(id){
+
+  const b =
+    document.getElementById(id);
+
+  const x =
+    (Math.random() * 180) - 90;
+
+  const y =
+    (Math.random() * 80) - 40;
+
+  b.style.left =
+    `calc(55% + ${x}px)`;
+
+  b.style.top =
+    `${y}px`;
+
+  b.style.transform =
+    `rotate(${(Math.random() * 30) - 15}deg)`;
+}
+
+
+/* CONFETTI */
+
+function celebrate(){
+
+  for(let i=0;i<80;i++){
+
+    const c =
+      document.createElement("div");
+
+    c.className =
+      "confetti";
+
+    c.textContent =
+      ["💗","💕","✨","🌸","🎉"]
+      [Math.floor(Math.random()*5)];
+
+    c.style.left =
+      Math.random()*100+"vw";
+
+    c.style.fontSize =
+      (12+Math.random()*18)+"px";
+
+    c.style.animationDelay =
+      Math.random()*.8+"s";
+
+    document.body.appendChild(c);
+
+    setTimeout(
+      () => c.remove(),
+      3500
+    );
+  }
+}
+
+
+/* FLOATING BACKGROUND */
+
 setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="bg-heart";
-  h.textContent=["♡","♥","✦","🌸"][Math.floor(Math.random()*4)];
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(5+Math.random()*5)+"s";
+
+  const h =
+    document.createElement("div");
+
+  h.className =
+    "bg-heart";
+
+  h.textContent =
+    ["♡","♥","✦","🌸"]
+    [Math.floor(Math.random()*4)];
+
+  h.style.left =
+    Math.random()*100+"vw";
+
+  h.style.animationDuration =
+    (5+Math.random()*5)+"s";
+
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(),10000);
+
+  setTimeout(
+    () => h.remove(),
+    10000
+  );
+
 },900);
+
 </script>
+
 </body>
 </html>
